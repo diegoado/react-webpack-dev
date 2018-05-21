@@ -43,7 +43,7 @@ const resolveServedPath = packageJson => {
 // config after eject: we're in ./config/
 module.exports = {
   dotenv: resolvePath('.env'),
-  build: resolvePath('build'),
+  build: resolvePath('dist'),
   public: resolvePath('public'),
   indexHtml: resolvePath('public/index.html'),
   indexJs: resolvePath('src/index.js'),

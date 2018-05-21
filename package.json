@@ -8,7 +8,7 @@
     "lint": "semistandard --verbose | snazzy",
     "lint:fix": "semistandard --fix",
     "lint:watch": "gulp",
-    "build": "cross-env NODE_ENV=production webpack --progress --config webpack.prod.config -p",
+    "build": "node scripts/build",
     "storybook": "start-storybook -c storybook -p 6006",
     "build-storybook": "build-storybook -c storybook"
   },

@@ -26,5 +26,8 @@
       "allowArrowFunctions": true,
       "allowBind": true
     }]
+  },
+  "globals": {
+    "fetch": true
   }
 }
