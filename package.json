@@ -53,7 +53,6 @@
     "webpack-manifest-plugin": "^2.0.2"
   },
   "dependencies": {
-    "axios": "^0.18.0",
     "object-assign": "^4.1.1",
     "promise": "^8.0.1",
     "prop-types": "^15.6.1",
@@ -110,7 +109,8 @@
     "globals": [
       "test",
       "it",
-      "describe"
+      "describe",
+      "fetch"
     ]
   }
 }

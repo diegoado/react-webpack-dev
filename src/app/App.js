@@ -12,18 +12,25 @@ class App extends Component {
     this.state = {
       userInfo: null,
       repos: [],
-      starred: []
+      starred: [],
+      isFetching: false
     };
+
+    this.searchHandle = ::this.searchHandle;
   }
 
   searchHandle (event) {
     const keyCode = event.which || event.keyCode;
-    const eTarget = event.target;
 
     if (keyCode === ENTER) {
-      eTarget.disabled = true;
+      this.setState({
+        userInfo: null,
+        repos: [],
+        starred: [],
+        isFetching: true
+      });
 
-      fetch(`https://api.github.com/users/${eTarget.value}`)
+      fetch(`https://api.github.com/users/${event.target.value}`)
         .then(response => {
           if (!response.ok) {
             throw Error(response.statusText);
@@ -31,24 +38,23 @@ class App extends Component {
           return response.json();
         })
         .then(data => {
+          const userInfo = {
+            name: data['name'],
+            login: data['login'],
+            avatar: data['avatar_url'],
+            followers: data['followers'],
+            following: data['following'],
+            repositories: data['public_repos']
+          };
           this.setState({
-            userInfo: {
-              name: data['name'],
-              login: data['login'],
-              avatar: data['avatar_url'],
-              repositories: data['public_repos'],
-              followers: data['followers'],
-              following: data['following']
-            },
-            repos: [],
-            starred: []
+            userInfo: userInfo
           });
         })
         .catch(error => {
           console.log(`Error caused by: ${error.message}`);
         })
         .finally(() => {
-          eTarget.disabled = false;
+          this.setState({ isFetching: false });
         });
     }
   }
@@ -83,7 +89,8 @@ class App extends Component {
         userInfo={this.state.userInfo}
         repositories={this.state.repos}
         starred={this.state.starred}
-        searchHandle={event => this.searchHandle(event)}
+        isFetching={this.state.isFetching}
+        searchHandle={this.searchHandle}
         reposHandle={() => this.repositoriesHandle('repos')}
         starredHandle={() => this.repositoriesHandle('starred')}
       />
