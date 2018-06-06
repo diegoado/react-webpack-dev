@@ -7,11 +7,11 @@ const url = require('url');
 // Make sure any symlinks in the project folder are resolved:
 // https://github.com/facebookincubator/create-react-app/issues/637
 const appDirectory = fs.realpathSync(process.cwd());
-const resolvePath  = relativePath => path.resolve(appDirectory, relativePath);
+const resolvePath = relativePath => path.resolve(appDirectory, relativePath);
 
 const envPublicUrl = process.env.PUBLIC_URL;
 
-function ensureSlash(path, needsSlash) {
+function ensureSlash (path, needsSlash) {
   const hasSlash = path.endsWith('/');
 
   if (hasSlash && !needsSlash) {
@@ -52,5 +52,5 @@ module.exports = {
   yarnLockFile: resolvePath('yarn.lock'),
   nodeModules: resolvePath('node_modules'),
   publicUrl: resolvePublicUrl(resolvePath('package.json')),
-  servedPath: resolveServedPath(resolvePath('package.json')),
+  servedPath: resolveServedPath(resolvePath('package.json'))
 };

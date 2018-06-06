@@ -1,0 +1,12 @@
+.repos {
+  float: left;
+  width: 100%;
+}
+
+.repos li {
+  padding: 10px 0;
+}
+
+.repos li + li {
+  border-top: 1px solid #ccc;
+}

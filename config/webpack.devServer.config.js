@@ -70,7 +70,7 @@ module.exports = (proxy, allowedHost) => {
     // src/node_modules is not ignored to support absolute imports
     // https://github.com/facebookincubator/create-react-app/issues/1065
     watchOptions: {
-      ignored: ignoredFiles(paths.src),
+      ignored: ignoredFiles(paths.src)
     },
     // Enable HTTPS if the HTTPS environment variable is set to 'true'
     https: protocol === 'https',
@@ -79,19 +79,19 @@ module.exports = (proxy, allowedHost) => {
     historyApiFallback: {
       // Paths with dots should still use the history fallback.
       // See https://github.com/facebookincubator/create-react-app/issues/387.
-      disableDotRule: true,
-      },
-      public: allowedHost,
-      proxy,
-      before(app) {
-        // This lets us open files from the runtime error overlay.
-        app.use(errorOverlayMiddleware());
-        // This service worker file is effectively a 'no-op' that will reset any
-        // previous service worker registered for the same host:port combination.
-        // We do this in development to avoid hitting the production cache if
-        // it used the same host and port.
-        // https://github.com/facebookincubator/create-react-app/issues/2272#issuecomment-302832432
-        app.use(noopServiceWorkerMiddleware());
-      },
-    };
+      disableDotRule: true
+    },
+    public: allowedHost,
+    proxy,
+    before (app) {
+      // This lets us open files from the runtime error overlay.
+      app.use(errorOverlayMiddleware());
+      // This service worker file is effectively a 'no-op' that will reset any
+      // previous service worker registered for the same host:port combination.
+      // We do this in development to avoid hitting the production cache if
+      // it used the same host and port.
+      // https://github.com/facebookincubator/create-react-app/issues/2272#issuecomment-302832432
+      app.use(noopServiceWorkerMiddleware());
+    }
+  };
 };

@@ -2,7 +2,7 @@
 
 // Do this as the first thing so that any code reading it knows the right env.
 process.env.BABEL_ENV = 'production';
-process.env.NODE_ENV  = 'production';
+process.env.NODE_ENV = 'production';
 
 // Makes the script crash on unhandled rejections instead of silently
 // ignoring them. In the future, promise rejections that are not handled will
@@ -25,7 +25,7 @@ const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 const printHostingInstructions = require('react-dev-utils/printHostingInstructions');
 const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
 
-const paths  = require('../config/paths');
+const paths = require('../config/paths');
 const config = require('../config/webpack.config.prod');
 
 const measureFileSizesBeforeBuild =
@@ -36,7 +36,7 @@ const useYarn = fs.existsSync(paths.yarnLockFile);
 
 // These sizes are pretty large. We'll warn for bundles exceeding them.
 const WARN_AFTER_BUNDLE_GZIP_SIZE = 512 * 1024;
-const WARN_AFTER_CHUNK_GZIP_SIZE  = 1024 * 1024;
+const WARN_AFTER_CHUNK_GZIP_SIZE = 1024 * 1024;
 
 // Warn and crash if required files are missing
 if (!checkRequiredFiles([paths.indexHtml, paths.indexJs])) {
@@ -78,7 +78,7 @@ const build = (previousFileSizes) => {
 const copyPublicFolder = () => {
   fs.copySync(paths.public, paths.build, {
     dereference: true,
-    filter: file => file !== paths.indexHtml,
+    filter: file => file !== paths.indexHtml
   });
 };
 
@@ -122,16 +122,16 @@ measureFileSizesBeforeBuild(paths.build)
       console.log('File sizes after gzip:\n');
 
       printFileSizesAfterBuild(
-          stats,
-          previousFileSizes,
-          paths.build,
-          WARN_AFTER_BUNDLE_GZIP_SIZE, WARN_AFTER_CHUNK_GZIP_SIZE);
+        stats,
+        previousFileSizes,
+        paths.build,
+        WARN_AFTER_BUNDLE_GZIP_SIZE, WARN_AFTER_CHUNK_GZIP_SIZE);
 
       console.log();
 
-      const appPackage  = require(paths.packageJson);
-      const publicUrl   = paths.publicUrl;
-      const publicPath  = config.output.publicPath;
+      const appPackage = require(paths.packageJson);
+      const publicUrl = paths.publicUrl;
+      const publicPath = config.output.publicPath;
       const buildFolder = path.relative(process.cwd(), paths.build);
 
       printHostingInstructions(appPackage, publicUrl, publicPath, buildFolder, useYarn);

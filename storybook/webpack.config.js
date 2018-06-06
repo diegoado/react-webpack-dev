@@ -20,44 +20,44 @@ module.exports = (storybookWebpack, env) => {
     enforce: 'pre',
     test: /\.jsx?$/,
     loader: 'eslint-loader',
-      exclude: /node_modules/,
-      options: {
-        parser: 'babel-eslint',
-        plugins: ['react'],
-        baseConfig: {
-          extends: ['semistandard-react']
-        }
+    exclude: /node_modules/,
+    options: {
+      parser: 'babel-eslint',
+      plugins: ['react'],
+      baseConfig: {
+        extends: ['semistandard-react']
       }
+    }
   });
 
   storybookWebpack.module.rules.push({
     test: /\.css$/,
-      use: [
-        'style-loader',
-        {
-          loader: 'css-loader',
-          options: {
-            modules: true,
-            importLoaders: 1
-          }
-        },
-        {
-          loader: 'postcss-loader',
-          options: {
-            ident: 'postcss',
-            plugins: () => [
-              require('postcss-flexbugs-fixes'),
-              autoprefixer({
-                browsers: [
-                  '>1%',
-                  'last 4 versions',
-                  'Firefox ESR',
-                  'not ie < 9' // React doesn't support IE8 anyway
-                ],
-                flexbox: 'no-2009'
-              })
-            ]}}
-      ]
+    use: [
+      'style-loader',
+      {
+        loader: 'css-loader',
+        options: {
+          modules: true,
+          importLoaders: 1
+        }
+      },
+      {
+        loader: 'postcss-loader',
+        options: {
+          ident: 'postcss',
+          plugins: () => [
+            require('postcss-flexbugs-fixes'),
+            autoprefixer({
+              browsers: [
+                '>1%',
+                'last 4 versions',
+                'Firefox ESR',
+                'not ie < 9' // React doesn't support IE8 anyway
+              ],
+              flexbox: 'no-2009'
+            })
+          ]}}
+    ]
   });
   return storybookWebpack;
 };
