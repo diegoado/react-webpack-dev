@@ -15,8 +15,10 @@ class App extends Component {
       starred: [],
       isFetching: false
     };
+    this.searchHandle = this.searchHandle.bind(this);
 
-    this.searchHandle = ::this.searchHandle;
+    this.reposHandle = this.actionsHandle.bind(this, 'repos');
+    this.starredHandle = this.actionsHandle.bind(this, 'starred');
   }
 
   searchHandle (event) {
@@ -38,16 +40,15 @@ class App extends Component {
           return response.json();
         })
         .then(data => {
-          const userInfo = {
-            name: data['name'],
-            login: data['login'],
-            avatar: data['avatar_url'],
-            followers: data['followers'],
-            following: data['following'],
-            repositories: data['public_repos']
-          };
           this.setState({
-            userInfo: userInfo
+            userInfo: {
+              name: data['name'],
+              login: data['login'],
+              avatar: data['avatar_url'],
+              followers: data['followers'],
+              following: data['following'],
+              repositories: data['public_repos']
+            }
           });
         })
         .catch(error => {
@@ -59,7 +60,7 @@ class App extends Component {
     }
   }
 
-  repositoriesHandle (repositoryType) {
+  actionsHandle (repositoryType) {
     const username = this.state.userInfo.login;
 
     fetch(`https://api.github.com/users/${username}/${repositoryType}`)
@@ -86,13 +87,10 @@ class App extends Component {
   render () {
     return (
       <AppContent
-        userInfo={this.state.userInfo}
-        repositories={this.state.repos}
-        starred={this.state.starred}
-        isFetching={this.state.isFetching}
+        {...this.state}
         searchHandle={this.searchHandle}
-        reposHandle={() => this.repositoriesHandle('repos')}
-        starredHandle={() => this.repositoriesHandle('starred')}
+        reposHandle={this.reposHandle}
+        starredHandle={this.starredHandle}
       />
     );
   }
