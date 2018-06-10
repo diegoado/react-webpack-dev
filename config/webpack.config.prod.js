@@ -3,6 +3,7 @@
 const autoprefixer = require('autoprefixer');
 const path = require('path');
 const webpack = require('webpack');
+const loadsh = require('lodash');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
@@ -13,6 +14,7 @@ const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 
 const clientEnvironment = require('./env');
 const paths = require('./paths');
+const packageJson = require(paths.packageJson);
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -35,14 +37,64 @@ if (env.stringified['process.env'].NODE_ENV !== '"production"') {
   throw new Error('Production builds must have NODE_ENV=production.');
 }
 
+// Note: defining the application title
+const packageName = packageJson.name || 'react-app';
+
+// Note: Critical Rendering Path defined on package.json
+const crp = packageJson.critical;
+
 // Note: defined here because it will be used more than once.
+const crpFilename = crp.dest || 'styles.css';
 const cssFilename = 'static/css/[name].[contenthash:8].css';
+
+const crpInputSrc = crp.src.map(file => new RegExp(file));
+
+const styleLoader = {
+  fallback: {
+    loader: 'style-loader',
+    options: {
+      hmr: false
+    }
+  },
+  use: [
+    {
+      loader: 'css-loader',
+      options: {
+        modules: true,
+        importLoaders: 1,
+        minimize: true,
+        sourceMap: shouldUseSourceMap
+      }
+    },
+    {
+      loader: 'postcss-loader',
+      options: {
+        ident: 'postcss',
+        plugins: () => [
+          require('postcss-flexbugs-fixes'),
+          autoprefixer({
+            browsers: [
+              '>1%',
+              'last 4 versions',
+              'Firefox ESR',
+              'not ie < 9'
+            ],
+            flexbox: 'no-2009'
+          })
+        ]
+      }
+    }
+  ]
+};
+
+const cssExtractText = new ExtractTextPlugin({ filename: cssFilename });
+const crpExtractText = new ExtractTextPlugin({ filename: crpFilename });
 
 // ExtractTextPlugin expects the build output to be flat.
 // (See https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/27)
 // However, our output is structured with css, js and media folders.
 // To have this structure working with relative paths, we have to use custom options.
-const extractTextPluginOptions = shouldUseRelativeAssetPaths
+const extractTextPluginOptions = (cssFilename) => shouldUseRelativeAssetPaths
   // Making sure that the publicPath goes back to to build folder.
   ? { publicPath: Array(cssFilename.split('/').length).join('../') }
   : {};
@@ -154,47 +206,24 @@ module.exports = {
           // use the "style" loader inside the async code so CSS from them won't be
           // in the main CSS file.
           {
-            test: /\.css$/,
-            loader: ExtractTextPlugin.extract(
+            test: crpInputSrc,
+            include: paths.src,
+            exclude: /node_modules/,
+            loader: crpExtractText.extract(
               Object.assign(
-                {
-                  fallback: {
-                    loader: 'style-loader',
-                    options: {
-                      hmr: false
-                    }
-                  },
-                  use: [
-                    {
-                      loader: 'css-loader',
-                      options: {
-                        modules: true,
-                        importLoaders: 1,
-                        minimize: true,
-                        sourceMap: shouldUseSourceMap
-                      }
-                    },
-                    {
-                      loader: 'postcss-loader',
-                      options: {
-                        ident: 'postcss',
-                        plugins: () => [
-                          require('postcss-flexbugs-fixes'),
-                          autoprefixer({
-                            browsers: [
-                              '>1%',
-                              'last 4 versions',
-                              'Firefox ESR',
-                              'not ie < 9'
-                            ],
-                            flexbox: 'no-2009'
-                          })
-                        ]
-                      }
-                    }
-                  ]
-                },
-                extractTextPluginOptions
+                styleLoader,
+                extractTextPluginOptions(crpFilename)
+              )
+            )
+          },
+          {
+            test: /\.css$/,
+            include: paths.src,
+            exclude: [/node_modules/, ...crpInputSrc],
+            loader: cssExtractText.extract(
+              Object.assign(
+                styleLoader,
+                extractTextPluginOptions(cssFilename)
               )
             )
           },
@@ -218,7 +247,9 @@ module.exports = {
     new InterpolateHtmlPlugin(env.raw),
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
-      inject: true,
+      inject: false,
+      title: loadsh.startCase(packageName),
+      crpStyle: crp.dest,
       template: paths.indexHtml,
       minify: {
         removeComments: true,
@@ -260,7 +291,8 @@ module.exports = {
       sourceMap: shouldUseSourceMap
     }),
     // Note: this won't work without ExtractTextPlugin.extract(..) in `loaders`.
-    new ExtractTextPlugin({ filename: cssFilename }),
+    cssExtractText,
+    crpExtractText,
     // Generate a manifest file which contains a mapping of all asset filenames
     // to their corresponding output file so that tools can pick it up without
     // having to parse `index.html`.

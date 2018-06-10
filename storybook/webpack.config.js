@@ -31,32 +31,55 @@ module.exports = (storybookWebpack, env) => {
   });
 
   storybookWebpack.module.rules.push({
-    test: /\.css$/,
-    use: [
-      'style-loader',
+    oneOf: [
       {
-        loader: 'css-loader',
+        test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+        loader: 'url-loader',
         options: {
-          modules: true,
-          importLoaders: 1
+          limit: 10000,
+          name: 'static/media/[name].[hash:8].[ext]'
         }
       },
       {
-        loader: 'postcss-loader',
+        test: /\.(js|jsx|mjs)$/,
+        exclude: /node_modules/,
+        include: /src/,
+        loader: 'babel-loader',
         options: {
-          ident: 'postcss',
-          plugins: () => [
-            require('postcss-flexbugs-fixes'),
-            autoprefixer({
-              browsers: [
-                '>1%',
-                'last 4 versions',
-                'Firefox ESR',
-                'not ie < 9' // React doesn't support IE8 anyway
-              ],
-              flexbox: 'no-2009'
-            })
-          ]}}
+          cacheDirectory: true
+        }
+      },
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              importLoaders: 1
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              ident: 'postcss',
+              plugins: () => [
+                require('postcss-flexbugs-fixes'),
+                autoprefixer({
+                  browsers: [
+                    '>1%',
+                    'last 4 versions',
+                    'Firefox ESR',
+                    'not ie < 9' // React doesn't support IE8 anyway
+                  ],
+                  flexbox: 'no-2009'
+                })
+              ]
+            }
+          }
+        ]
+      }
     ]
   });
   return storybookWebpack;

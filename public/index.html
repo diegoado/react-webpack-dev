@@ -19,7 +19,12 @@
     work correctly both with client-side routing and a non-root public URL.
     Learn how to configure a non-root public URL by running `npm run build`.
   -->
-  <title>React App</title>
+  <title><%= htmlWebpackPlugin.options.title %></title>
+  <% if (!!compilation.assets[htmlWebpackPlugin.options.crpStyle]) { %>
+    <style>
+      <%=  compilation.assets[htmlWebpackPlugin.options.crpStyle].source() %>
+    </style>
+  <% } %>
 </head>
 <body>
   <noscript>
@@ -36,5 +41,13 @@
     To begin the development, run `npm start` or `yarn start`.
     To create a production bundle, use `npm run build` or `yarn build`.
   -->
+  <% htmlWebpackPlugin.files.js.forEach((jsFile) => { %>
+    <script async src="<%= jsFile %>"></script>
+  <% }) %>
+  <% htmlWebpackPlugin.files.css.forEach((cssFile) => { %>
+    <% if (cssFile !== '/' + htmlWebpackPlugin.options.crpStyle) { %>
+      <link rel="stylesheet" href="<%= cssFile %>">
+    <% } %>
+  <% }) %>
 </body>
 </html>

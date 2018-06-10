@@ -3,6 +3,7 @@
 const path = require('path');
 const autoprefixer = require('autoprefixer');
 const webpack = require('webpack');
+const loadsh = require('lodash');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
@@ -12,6 +13,7 @@ const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 
 const clientEnvironment = require('./env');
 const paths = require('./paths');
+const packageJson = require(paths.packageJson);
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -22,6 +24,8 @@ const publicPath = '/';
 const publicUrl = '';
 // Get environment variables to inject into our app.
 const env = clientEnvironment(publicUrl);
+// Note: defining the application title
+const packageName = packageJson.name || 'react-app';
 
 const protocol = process.env.HTTPS === 'true' ? 'https' : 'http';
 const host = process.env.HOST || '0.0.0.0';
@@ -168,7 +172,8 @@ module.exports = {
   plugins: [
     // Generates an `index.html` file with the <script> injected.
     new HtmlWebpackPlugin({
-      inject: true,
+      inject: false,
+      title: loadsh.startCase(packageName),
       template: paths.indexHtml
     }),
     // Makes some environment variables available in index.html.
