@@ -28,6 +28,9 @@
     }]
   },
   "globals": {
+    "test": true,
+    "it": true,
+    "describe": true,
     "fetch": true
   }
 }
