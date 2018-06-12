@@ -1,16 +1,17 @@
 'use strict';
 
 const centerPage = ({ activePage, total }) => {
-  if (activePage - 1 <= 0) {
-    return 1;
-  }
-  if (activePage === total) {
-    return activePage - 2;
-  }
-  return activePage - 1;
+  return activePage - 1 <= 0 ? 1
+    : activePage === total ? activePage - 2 : activePage - 1;
 };
 
-const pagination = ({ activePage, total }) => {
+const isNumber = (value) => typeof value === 'number';
+
+const pagination = ({ activePage = 1, total = 1 } = {}) => {
+  if (!isNumber(activePage) || !isNumber(total)) {
+    throw TypeError('total and activePage should be a number');
+  }
+
   if (total <= 5) {
     return Array.from({ length: total }, (_, i) => i + 1);
   }
