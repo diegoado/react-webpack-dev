@@ -1,10 +1,10 @@
 @charset "utf-8";
 
 .actions {
-  float: left;
-  width: 100%;
   display: flex;
   justify-content: space-between;
+  float: left;
+  width: 100%;
 }
 
 .actions button {
@@ -12,5 +12,10 @@
   font-weight: 700;
   height: 50px;
   text-transform: uppercase;
-  width: 48%;
+  margin-right: 20px;
+  width: 100%
+}
+
+.actions :first-child {
+  margin-left: 0;
 }

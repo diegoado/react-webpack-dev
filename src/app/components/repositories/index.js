@@ -3,16 +3,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import Pagination from '../pagination';
+
 import style from './repositories.css';
 
 const Repositories = ({ title, repos }) => (
-  <div className={style['repos']}>
+  <div>
     <h2>{`${title}:`}</h2>
-    <ul>
+    <ul className={style['repos-list']}>
       {repos.map((repository) => (
         <li key={repository.id}><a href={repository.link}>{repository.name}</a></li>
       ))}
     </ul>
+    <Pagination total={10} activePage={3} />
   </div>
 );
 

@@ -1,12 +1,9 @@
-.repos {
-  float: left;
-  width: 100%;
-}
+@charset "utf-8";
 
-.repos li {
+.repos-list li {
   padding: 10px 0;
 }
 
-.repos li + li {
+.repos-list li + li {
   border-top: 1px solid #ccc;
 }

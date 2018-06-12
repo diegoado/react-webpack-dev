@@ -5,3 +5,19 @@
   padding: 30px;
   width: 100%;
 }
+
+.repos-container {
+  display: flex;
+  justify-content: space-between;
+  float: left;
+  width: 100%;
+}
+
+.repos-container > div {
+  margin-right: 20px;
+  width: 100%
+}
+
+.repos-container :first-child {
+  margin-left: 0;
+}
