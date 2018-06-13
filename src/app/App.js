@@ -5,20 +5,24 @@ import React, { Component } from 'react';
 import AppContent from './components/app-content';
 
 const ENTER = 13;
+const BASE_GITHUB_URL = 'https://api.github.com/users/';
 
 class App extends Component {
   constructor () {
     super();
     this.state = {
-      userInfo: null,
-      repos: [],
-      starred: [],
+      userInfo: undefined,
+      repos: undefined,
+      starred: undefined,
       isFetching: false
     };
-    this.searchHandle = this.searchHandle.bind(this);
 
-    this.reposHandle = this.actionsHandle.bind(this, 'repos');
-    this.starredHandle = this.actionsHandle.bind(this, 'starred');
+    this.searchHandle = ::this.searchHandle;
+    this.actionHandle = ::this.actionHandle;
+  }
+
+  static getGitHubApiURL (username, repositoryType = '', page = 1) {
+    return `${BASE_GITHUB_URL}${username}${repositoryType}?per_page=${5}&page=${page}`;
   }
 
   searchHandle (event) {
@@ -26,13 +30,15 @@ class App extends Component {
 
     if (keyCode === ENTER) {
       this.setState({
-        userInfo: null,
-        repos: [],
-        starred: [],
+        userInfo: undefined,
+        repos: undefined,
+        starred: undefined,
         isFetching: true
       });
 
-      fetch(`https://api.github.com/users/${event.target.value}`)
+      const url = App.getGitHubApiURL(event.target.value);
+
+      fetch(url)
         .then(response => {
           if (!response.ok) {
             throw Error(response.statusText);
@@ -60,23 +66,37 @@ class App extends Component {
     }
   }
 
-  actionsHandle (repositoryType) {
+  actionHandle (repositoryType, page = 1) {
     const username = this.state.userInfo.login;
+    const url = App.getGitHubApiURL(username, '/' + repositoryType, page);
 
-    fetch(`https://api.github.com/users/${username}/${repositoryType}`)
+    fetch(url)
       .then(response => {
         if (!response.ok) {
           throw Error(response.statusText);
         }
-        return response.json();
+        const link = response.headers.get('link') || '';
+        const totalPages = link.match(/&page=(\d+)>; rel="last"/);
+
+        return response.json()
+          .then(data => ({
+            pagination: {
+              total: totalPages ? +totalPages[1] : page,
+              activePage: page
+            },
+            data: data
+          }));
       })
-      .then(data => {
+      .then(({ data, pagination }) => {
         this.setState({
-          [repositoryType]: data.map(repository => ({
-            id: repository['id'],
-            name: repository['name'],
-            link: repository['html_url']
-          }))
+          [repositoryType]: {
+            repos: data.map(repository => ({
+              id: repository['id'],
+              name: repository['name'],
+              link: repository['html_url']
+            })),
+            pagination: pagination
+          }
         });
       })
       .catch(error => {
@@ -88,9 +108,8 @@ class App extends Component {
     return (
       <AppContent
         {...this.state}
+        actionHandle={this.actionHandle}
         searchHandle={this.searchHandle}
-        reposHandle={this.reposHandle}
-        starredHandle={this.starredHandle}
       />
     );
   }

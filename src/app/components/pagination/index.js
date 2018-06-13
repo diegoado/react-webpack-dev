@@ -18,14 +18,9 @@ const Pagination = ({ activePage, total, pagesUrl, callback }) => (
   </ul>
 );
 
-Pagination.defaultProps = {
-  activePage: 1,
-  total: 1
-};
-
 Pagination.propTypes = {
-  activePage: PropTypes.number,
-  total: PropTypes.number,
+  activePage: PropTypes.number.isRequired,
+  total: PropTypes.number.isRequired,
   pagesUrl: PropTypes.string,
   callback: PropTypes.func
 };

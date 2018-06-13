@@ -10,35 +10,61 @@ import UserInfo from '../user-info';
 
 import style from './app-content.css';
 
-const AppContent = ({ userInfo, repos, starred, isFetching, searchHandle, reposHandle, starredHandle }) => (
+const AppContent = ({
+  userInfo, repos, starred, isFetching, searchHandle, actionHandle
+}) => (
   <div className={style['app']}>
     <Search isDisabled={isFetching} searchHandle={searchHandle} />
     { isFetching && <div>Loading...</div>}
     { !!userInfo && <UserInfo {...userInfo} /> }
-    { !!userInfo && <Actions reposHandle={reposHandle} starredHandle={starredHandle} /> }
+    { !!userInfo &&
+    <Actions
+      reposHandle={() => actionHandle('repos')}
+      starredHandle={() => actionHandle('starred')}
+    /> }
 
     <div className={style['repos-container']}>
-      { !!repos.length && <Repositories repos={repos} /> }
-      { !!starred.length && <Repositories title='Starred' repos={starred} /> }
+      { !!repos.repos.length &&
+      <Repositories
+        {...repos}
+        paginationCallback={page => actionHandle('repos', page)}
+      /> }
+      { !!starred.repos.length &&
+      <Repositories
+        {...starred}
+        title='Starred'
+        paginationCallback={page => actionHandle('starred', page)}
+      /> }
     </div>
   </div>
 );
 
 AppContent.defaultProps = {
   userInfo: null,
-  repos: [],
-  starred: [],
+  repos: {
+    repos: [],
+    pagination: undefined
+  },
+  starred: {
+    repos: [],
+    pagination: undefined
+  },
   isFetching: false
 };
 
 AppContent.propTypes = {
   userInfo: PropTypes.object,
-  repos: PropTypes.arrayOf(PropTypes.object),
-  starred: PropTypes.arrayOf(PropTypes.object),
+  repos: PropTypes.shape({
+    repos: PropTypes.arrayOf(PropTypes.object),
+    pagination: PropTypes.object
+  }),
+  starred: PropTypes.shape({
+    repos: PropTypes.arrayOf(PropTypes.object),
+    pagination: PropTypes.object
+  }),
   isFetching: PropTypes.bool,
   searchHandle: PropTypes.func.isRequired,
-  reposHandle: PropTypes.func.isRequired,
-  starredHandle: PropTypes.func.isRequired
+  actionHandle: PropTypes.func.isRequired
 };
 
 export default AppContent;
