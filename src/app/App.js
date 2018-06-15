@@ -78,14 +78,16 @@ class App extends Component {
         const link = response.headers.get('link') || '';
         const totalPages = link.match(/&page=(\d+)>; rel="last"/);
 
-        return response.json()
-          .then(data => ({
+        const result = async () => {
+          return {
             pagination: {
               total: totalPages ? +totalPages[1] : page,
               activePage: page
             },
-            data: data
-          }));
+            data: await response.json()
+          };
+        };
+        return result();
       })
       .then(({ data, pagination }) => {
         this.setState({
