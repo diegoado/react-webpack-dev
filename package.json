@@ -122,8 +122,7 @@
   },
   "critical": {
     "src": [
-      "styles.css",
-      "search.css"
+      "styles.css"
     ],
     "dest": "static/css/styles.css"
   }
