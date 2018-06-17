@@ -41,13 +41,14 @@
     To begin the development, run `npm start` or `yarn start`.
     To create a production bundle, use `npm run build` or `yarn build`.
   -->
-  <% htmlWebpackPlugin.files.js.forEach((jsFile) => { %>
-    <script async src="<%= jsFile %>"></script>
-  <% }) %>
   <% htmlWebpackPlugin.files.css.forEach((cssFile) => { %>
-    <% if (cssFile !== '/' + htmlWebpackPlugin.options.crpStyle) { %>
-      <link rel="stylesheet" href="<%= cssFile %>">
-    <% } %>
+  <% if (cssFile !== '/' + htmlWebpackPlugin.options.crpStyle) { %>
+  <link rel="stylesheet" href="<%= cssFile %>">
+  <% }  %>
+  <% }) %>
+
+  <% htmlWebpackPlugin.files.js.forEach((jsFile) => { %>
+    <script src="<%= jsFile %>"></script>
   <% }) %>
 </body>
 </html>

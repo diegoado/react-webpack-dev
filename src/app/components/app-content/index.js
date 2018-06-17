@@ -1,14 +1,20 @@
 'use strict';
 
 import React from 'react';
+import Loadable from 'react-loadable';
 import PropTypes from 'prop-types';
 
 import Actions from '../actions';
 import Search from '../search';
-import Repositories from '../repositories';
+// import Repositories from '../repositories';
 import UserInfo from '../user-info';
 
 import style from './app-content.css';
+
+const LoadableRepositories = Loadable({
+  loader: () => import('../repositories'),
+  loading: () => <div>Loading...</div>
+});
 
 const AppContent = ({
   userInfo, repos, starred, isFetching, searchHandle, actionHandle
@@ -25,14 +31,14 @@ const AppContent = ({
 
     <div className={style['repos-container']}>
       { !!repos.repos.length &&
-      <Repositories
+      <LoadableRepositories
         {...repos}
-        paginationCallback={page => actionHandle('repos', page)}
+        paginationCallback={page => actionHandle('starred', page)}
       /> }
-      { !!starred.repos.length &&
-      <Repositories
-        {...starred}
-        title='Starred'
+
+      {!!starred.repos.length &&
+      <LoadableRepositories
+        {...starred} title='Starred'
         paginationCallback={page => actionHandle('starred', page)}
       /> }
     </div>

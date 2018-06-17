@@ -110,8 +110,8 @@ module.exports = {
   devtool: shouldUseSourceMap ? 'source-map' : false,
   // In production, we only want to load the polyfills and the app code.
   entry: [
-    require.resolve('../polyfills'),
-    paths.indexJs
+      require.resolve('../polyfills'),
+      paths.indexJs
   ],
   output: {
     path: paths.build,
@@ -177,7 +177,9 @@ module.exports = {
       {
         oneOf: [
           {
-            test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+            test: /\.(mp4|webm|wav|mp3|m4a|acc|oga)(\?.*)?$/,
+            include: paths.src,
+            exclude: /node_modules/,
             loader: 'url-loader',
             options: {
               limit: 10000,
@@ -228,7 +230,9 @@ module.exports = {
             )
           },
           {
-            exclude: [/\.(js|jsx|mjs)$/, /\.html$/, /\.css$/, /\.json$/],
+            test: /\.(ico|jpe?g|png|gif|eof|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
+            include: paths.src,
+            exclude: /node_modules/,
             loader: 'file-loader',
             options: {
               name: 'static/media/[name].[hash:8].[ext]'
@@ -269,6 +273,13 @@ module.exports = {
     // It is absolutely essential that NODE_ENV was set to production here.
     // Otherwise React will be compiled in the very slow development mode.
     new webpack.DefinePlugin(env.stringified),
+    //  Separate common modules from bundles
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      minChunks: ({ resource }) => (
+        /node_modules\/react(-(dom|loadable))?/.test(resource)
+      ),
+    }),
     // Minify the code.
     new webpack.optimize.UglifyJsPlugin({
       compress: {

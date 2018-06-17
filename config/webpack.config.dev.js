@@ -111,7 +111,9 @@ module.exports = {
       {
         oneOf: [
           {
-            test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+            test: /\.(mp4|webm|wav|mp3|m4a|acc|oga)(\?.*)?$/,
+            include: paths.src,
+            exclude: /node_modules/,
             loader: 'url-loader',
             options: {
               limit: 10000,
@@ -159,7 +161,9 @@ module.exports = {
             ]
           },
           {
-            exclude: [/\.(js|jsx|mjs)$/, /\.html$/, /\.css$/, /\.json$/],
+            test: /\.(ico|jpe?g|png|gif|eof|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
+            include: paths.src,
+            exclude: /node_modules/,
             loader: 'file-loader',
             options: {
               name: 'static/media/[name].[hash:8].[ext]'
