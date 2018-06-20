@@ -136,7 +136,7 @@ module.exports = {
               {
                 loader: 'css-loader',
                 options: {
-                  modules: true,
+                  modules: false,
                   importLoaders: 1
                 }
               },
@@ -145,6 +145,9 @@ module.exports = {
                 options: {
                   ident: 'postcss',
                   plugins: () => [
+                    require('postcss-modules')({
+                      globalModulePaths: [/styles/]
+                    }),
                     require('postcss-flexbugs-fixes'),
                     autoprefixer({
                       browsers: [

@@ -1,0 +1,33 @@
+@charset "utf-8";
+
+.editor {
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  width: 100%;
+}
+
+.text-area,
+.view {
+  height: calc(100% - 40px);
+  min-width: 40%;
+  max-width: 40%;
+}
+
+.text-area {
+  font-size: 18px;
+  padding: 10px;
+  resize: none;
+}
+
+.text-area:focus {
+  outline: 0 none;
+}
+
+.view {
+  background: #333;
+  color: #fff;
+  font-family: sans-serif;
+  overflow: auto;
+  padding: 10px;
+}

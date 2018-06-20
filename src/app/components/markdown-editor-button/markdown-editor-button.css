@@ -1,0 +1,26 @@
+@charset "utf-8";
+
+.button {
+  border: 0;
+  color: #fff;
+  font-weight: 700;
+  padding: 0 20px;
+  text-transform: uppercase;
+  transition: all 0.25s ease-in-out;
+}
+
+.button-create {
+  background: green;
+}
+
+.button-create:hover {
+  background: darkgreen;
+}
+
+.button-remove {
+  background: red;
+}
+
+.button-remove:hover {
+  background: darkred;
+}

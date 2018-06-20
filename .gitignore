@@ -17,6 +17,9 @@ storybook-static/
 .idea/
 *.iml
 
+# postcss-modules
+src/**/*.css.json
+
 # misc
 .DS_Store
 .env.local

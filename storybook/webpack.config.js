@@ -58,7 +58,7 @@ module.exports = (storybookWebpack, env) => {
           {
             loader: 'css-loader',
             options: {
-              modules: true,
+              modules: false,
               importLoaders: 1
             }
           },
@@ -67,6 +67,9 @@ module.exports = (storybookWebpack, env) => {
             options: {
               ident: 'postcss',
               plugins: () => [
+                require('postcss-modules')({
+                  globalModulePaths: [/styles/]
+                }),
                 require('postcss-flexbugs-fixes'),
                 autoprefixer({
                   browsers: [

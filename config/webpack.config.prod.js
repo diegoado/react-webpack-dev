@@ -11,6 +11,7 @@ const ManifestPlugin = require('webpack-manifest-plugin');
 const InterpolateHtmlPlugin = require('react-dev-utils/InterpolateHtmlPlugin');
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const clientEnvironment = require('./env');
 const paths = require('./paths');
@@ -49,6 +50,8 @@ const cssFilename = 'static/css/[name].[contenthash:8].css';
 
 const crpInputSrc = crp.src.map(file => new RegExp(file));
 
+const chunksOrder = ['react', 'vendor', 'main'];
+
 const styleLoader = {
   fallback: {
     loader: 'style-loader',
@@ -60,7 +63,7 @@ const styleLoader = {
     {
       loader: 'css-loader',
       options: {
-        modules: true,
+        modules: false,
         importLoaders: 1,
         minimize: true,
         sourceMap: shouldUseSourceMap
@@ -71,6 +74,9 @@ const styleLoader = {
       options: {
         ident: 'postcss',
         plugins: () => [
+          require('postcss-modules')({
+            globalModulePaths: [/styles/]
+          }),
           require('postcss-flexbugs-fixes'),
           autoprefixer({
             browsers: [
@@ -109,10 +115,12 @@ module.exports = {
   // You can exclude the *.map files from the build during deployment.
   devtool: shouldUseSourceMap ? 'source-map' : false,
   // In production, we only want to load the polyfills and the app code.
-  entry: [
+  entry: {
+    main: [
       require.resolve('../polyfills'),
       paths.indexJs
-  ],
+    ]
+  },
   output: {
     path: paths.build,
     // Generated JS file names (with nested folders).
@@ -147,7 +155,9 @@ module.exports = {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
-      'src': path.join(__dirname, 'src')
+      'react': 'preact-compat',
+      'react-dom': 'preact-compat',
+      'src': path.join(__dirname, '..', 'src')
     },
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).
@@ -266,6 +276,11 @@ module.exports = {
         minifyJS: true,
         minifyCSS: true,
         minifyURLs: true
+      },
+      chunksSortMode: (chunk1, chunk2) => {
+        return (
+          chunksOrder.indexOf(chunk1.names[0]) - chunksOrder.indexOf(chunk2.names[0])
+        );
       }
     }),
     // Makes some environment variables available to the JS code, for example:
@@ -275,9 +290,18 @@ module.exports = {
     new webpack.DefinePlugin(env.stringified),
     //  Separate common modules from bundles
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
+      name: 'react',
+      chunks: ['main'],
       minChunks: ({ resource }) => (
-        /node_modules\/react(-(dom|loadable))?/.test(resource)
+        /node_modules\/(react(-dom|-loadable)?|fbjs)/.test(resource)
+        || /node_modules\/preact/.test(resource)
+      ),
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      chunks: ['main'],
+      minChunks: ({ resource }) => (
+        /node_modules/.test(resource)
       ),
     }),
     // Minify the code.
@@ -344,7 +368,9 @@ module.exports = {
     // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
     // You can remove this if you don't use Moment.js:
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
-  ],
+  ].concat(
+    process.env.ANALYZER ? new BundleAnalyzerPlugin() : []
+  ),
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
   node: {

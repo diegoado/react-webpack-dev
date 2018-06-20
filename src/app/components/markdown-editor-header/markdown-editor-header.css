@@ -1,0 +1,18 @@
+@charset "utf-8";
+
+.editor-header {
+  background: #222;
+  display: flex;
+  height: 40px;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.editor-header .save-message {
+  align-items: center;
+  color: #fff;
+  display: flex;
+  font: 15px sans-serif;
+  margin: 0;
+  padding: 0 20px;
+}
