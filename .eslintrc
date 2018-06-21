@@ -11,7 +11,7 @@
   },
   "rules": {
     /* JSX */
-    "react/prop-types": [1, {
+    "react/prop-types": [0, {
       "ignore": ["className", "children", "location", "params", "location*"]
     }],
     "no-param-reassign": [0, {
@@ -20,18 +20,11 @@
     "prefer-rest-params": 1,
     "arrow-body-style": 0,
     "prefer-template": 0,
-    "react/prefer-stateless-function": 1,
+    "react/prefer-stateless-function": 0,
     "react/jsx-no-bind": [0, {
       "ignoreRefs": false,
       "allowArrowFunctions": true,
       "allowBind": true
     }]
-  },
-  "globals": {
-    "test": true,
-    "it": true,
-    "describe": true,
-    "fetch": true,
-    "localStorage": true
   }
 }

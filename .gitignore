@@ -18,7 +18,7 @@ storybook-static/
 *.iml
 
 # postcss-modules
-src/**/*.css.json
+*.css.json
 
 # misc
 .DS_Store

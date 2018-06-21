@@ -8,93 +8,27 @@
 // When you add this file, we won't add the default configurations which is similar
 // to "React Create App". This only has babel loader to load JavaScript.
 
-const path = require('path');
-const autoprefixer = require('autoprefixer');
+const common = require('../config/webpack.config.common');
 
-module.exports = (storybookWebpack, env) => {
-  storybookWebpack.resolve.alias = {
-    src: path.join(__dirname, '..', 'src')
-  };
+module.exports = (storybookWebpack) => {
+  storybookWebpack.resolve.alias = common.resolve.alias;
 
-  storybookWebpack.module.rules.push({
-    enforce: 'pre',
-    test: /\.jsx?$/,
-    loader: 'eslint-loader',
-    exclude: /node_modules/,
-    options: {
-      parser: 'babel-eslint',
-      plugins: ['react'],
-      baseConfig: {
-        extends: ['semistandard-react']
-      }
-    }
-  });
+  storybookWebpack.module.rules.push(common.preLoader);
 
   storybookWebpack.module.rules.push({
     oneOf: [
-      {
-        test: /\.(mp4|webm|wav|mp3|m4a|acc|oga)(\?.*)?$/,
-        include: /src/,
-        exclude: /node_modules/,
-        loader: 'url-loader',
-        options: {
-          limit: 10000,
-          name: 'static/media/[name].[hash:8].[ext]'
-        }
-      },
-      {
-        test: /\.(js|jsx|mjs)$/,
-        exclude: /node_modules/,
-        include: /src/,
-        loader: 'babel-loader',
-        options: {
-          cacheDirectory: true
-        }
-      },
+      common.urlLoader,
+      common.jsLoader,
       {
         test: /\.css$/,
         use: [
           'style-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              modules: false,
-              importLoaders: 1
-            }
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              ident: 'postcss',
-              plugins: () => [
-                require('postcss-modules')({
-                  globalModulePaths: [/styles/]
-                }),
-                require('postcss-flexbugs-fixes'),
-                autoprefixer({
-                  browsers: [
-                    '>1%',
-                    'last 4 versions',
-                    'Firefox ESR',
-                    'not ie < 9' // React doesn't support IE8 anyway
-                  ],
-                  flexbox: 'no-2009'
-                })
-              ]
-            }
-          }
+          ...common.cssLoader.use
         ]
       },
-      {
-        test: /\.(ico|jpe?g|png|gif|eof|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
-        include: /src/,
-        exclude: /node_modules/,
-        loader: 'file-loader',
-        options: {
-          name: 'static/media/[name].[hash:8].[ext]'
-        }
-      }
+      common.fileLoader
     ]
   });
+
   return storybookWebpack;
 };

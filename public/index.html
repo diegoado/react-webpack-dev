@@ -20,9 +20,9 @@
     Learn how to configure a non-root public URL by running `npm run build`.
   -->
   <title><%= htmlWebpackPlugin.options.title %></title>
-  <% if (!!compilation.assets[htmlWebpackPlugin.options.crpStyle]) { %>
+  <% if (!!compilation.assets['static/css/styles.css']) { %>
     <style>
-      <%=  compilation.assets[htmlWebpackPlugin.options.crpStyle].source() %>
+      <%=  compilation.assets['static/css/styles.css'].source() %>
     </style>
   <% } %>
 </head>
@@ -42,7 +42,7 @@
     To create a production bundle, use `npm run build` or `yarn build`.
   -->
   <% htmlWebpackPlugin.files.css.forEach((cssFile) => { %>
-  <% if (cssFile !== '/' + htmlWebpackPlugin.options.crpStyle) { %>
+  <% if (cssFile !== '/static/css/styles.css') { %>
   <link rel="stylesheet" href="<%= cssFile %>">
   <% }  %>
   <% }) %>
