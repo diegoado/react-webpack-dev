@@ -77,24 +77,28 @@ module.exports = {
         oneOf: [
           common.urlLoader,
           Object.assign({}, common.jsLoader, {
-            options: {
-              babelrc: false,
-              compact: true,
-              presets: [
-                ['env', { modules: false }],
-                'stage-0',
-                'react'
-              ],
-              plugins: [
-                'react-hot-loader/babel',
-                ['transform-runtime', {
-                  helpers: false,
-                  polyfill: false,
-                  regenerator: true,
-                  moduleName: 'babel-runtime'
-                }]
-              ]
-            }
+            use: [
+              {
+                loader: 'babel-loader',
+                options: {
+                  babelrc: false,
+                  compact: true,
+                  presets: [
+                    ['env', { modules: false }],
+                    'stage-0',
+                    'react'
+                  ],
+                  plugins: [
+                    ['transform-runtime', {
+                      helpers: false,
+                      polyfill: false,
+                      regenerator: true,
+                      moduleName: 'babel-runtime'
+                    }]
+                  ]
+                }
+              }
+            ]
           }),
           // The notation here is somewhat confusing.
           // "postcss" loader applies autoprefixer to our CSS.

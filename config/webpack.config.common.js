@@ -105,10 +105,14 @@ module.exports = {
   jsLoader: {
     test: /\.(js|jsx|mjs)$/,
     include: paths.src,
-    loader: 'babel-loader',
-    options: {
-      cacheDirectory: true
-    }
+    use: [
+      {
+        loader: 'babel-loader',
+        options: {
+          cacheDirectory: true
+        }
+      }
+    ]
   },
 
   cssLoader: {
