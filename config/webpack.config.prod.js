@@ -66,7 +66,9 @@ module.exports = {
       'react-native': 'react-native-web',
       'react': 'preact-compat',
       'react-dom': 'preact-compat',
-      'src': path.join(__dirname, '..', 'src')
+      'src': paths.src,
+      'components': path.join(paths.src, 'app', 'components'),
+      'reducers': path.join(paths.src, 'redux-flow', 'reducers')
     }
   }),
   module: {

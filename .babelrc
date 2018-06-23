@@ -11,6 +11,9 @@
       "polyfill": false,
       "regenerator": true,
       "moduleName": "babel-runtime"
+    }],
+    ["babel-plugin-webpack-alias", {
+      "config": "./config/webpack.config.dev.js"
     }]
   ]
 }

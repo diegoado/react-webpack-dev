@@ -2,7 +2,7 @@
   "name": "react-app",
   "scripts": {
     "start": "node scripts/start",
-    "test": "node scripts/test --no-cache --env=jsdom",
+    "test": "node scripts/test --env=jsdom",
     "test:coverage": "npm test -- --coverage",
     "test:watch": "npm test -- --watch",
     "lint": "semistandard --verbose | snazzy",
@@ -23,6 +23,7 @@
     "babel-eslint": "^8.2.3",
     "babel-loader": "^7.1.4",
     "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-plugin-webpack-alias": "^2.1.2",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-0": "^6.24.1",
@@ -75,6 +76,7 @@
     "react-dom": "^16.3.2",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
+    "uuid": "^3.2.1",
     "whatwg-fetch": "^2.0.4"
   },
   "jest": {
@@ -116,6 +118,7 @@
     "globals": [
       "test",
       "it",
+      "xit",
       "describe",
       "fetch",
       "localStorage"

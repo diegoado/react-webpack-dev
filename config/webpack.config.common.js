@@ -62,7 +62,9 @@ module.exports = {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
-      'src': path.join(__dirname, '..', 'src')
+      'src': paths.src,
+      'components': path.join(paths.src, 'app', 'components'),
+      'reducers': path.join(paths.src, 'redux-flow', 'reducers')
     },
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).

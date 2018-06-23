@@ -30,6 +30,7 @@
   "globals": {
     "test": true,
     "it": true,
+    "xit": true,
     "describe": true,
     "fetch": true,
     "localStorage": true
