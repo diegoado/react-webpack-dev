@@ -5,7 +5,7 @@ import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
-import registerServiceWorker from './registerServiceWorker';
+import registerServiceWorker, { unregister } from './registerServiceWorker';
 import reducer from 'reducers';
 
 import './styles.css';
@@ -34,3 +34,7 @@ if (module.hot) {
 }
 
 registerServiceWorker();
+
+if (process.env.NODE_ENV !== 'production') {
+  unregister();
+}

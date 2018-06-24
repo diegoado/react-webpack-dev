@@ -52,6 +52,7 @@
     "react-dev-utils": "^5.0.1",
     "react-hot-loader": "^4.2.0",
     "react-test-renderer": "^16.4.1",
+    "redux-mock-store": "^1.5.3",
     "resolve": "^1.7.1",
     "semistandard": "^12.0.1",
     "snazzy": "^7.1.1",
