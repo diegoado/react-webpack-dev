@@ -3,15 +3,14 @@ import ReactDOM from 'react-dom';
 
 import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
-import { createStore } from 'redux';
 
 import registerServiceWorker, { unregister } from './registerServiceWorker';
-import reducer from 'reducers';
+import configureStore from 'store';
 
 import './styles.css';
 import App from './app/App';
 
-const store = createStore(reducer);
+const store = configureStore();
 
 const renderApp = (NextApp) => {
   ReactDOM.render(

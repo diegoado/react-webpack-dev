@@ -52,6 +52,7 @@
     "react-dev-utils": "^5.0.1",
     "react-hot-loader": "^4.2.0",
     "react-test-renderer": "^16.4.1",
+    "redux-devtools-extension": "^2.13.5",
     "redux-mock-store": "^1.5.3",
     "resolve": "^1.7.1",
     "semistandard": "^12.0.1",
@@ -77,6 +78,7 @@
     "react-loadable": "^5.4.0",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
+    "redux-thunk": "^2.3.0",
     "whatwg-fetch": "^2.0.4"
   },
   "jest": {
