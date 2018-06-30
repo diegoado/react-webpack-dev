@@ -4,10 +4,12 @@ import ReactDOM from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 
-import registerServiceWorker, { unregister } from './registerServiceWorker';
+import registerServiceWorker from './registerServiceWorker';
 import configureStore from 'store';
 
 import './styles.css';
+import './global.css';
+
 import App from './app/App';
 
 const store = configureStore();
@@ -33,7 +35,3 @@ if (module.hot) {
 }
 
 registerServiceWorker();
-
-if (process.env.NODE_ENV !== 'production') {
-  unregister();
-}

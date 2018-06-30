@@ -65,7 +65,8 @@ module.exports = {
       'components': path.join(paths.src, 'app', 'components'),
       'reducers': path.join(paths.src, 'redux', 'reducers'),
       'store': path.join(paths.src, 'redux', 'store'),
-      'repositories': path.join(paths.src, 'repositories')
+      'repositories': path.join(paths.src, 'repositories'),
+      'utils': path.join(paths.src, 'utils')
     },
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).
@@ -141,7 +142,7 @@ module.exports = {
           ident: 'postcss',
           plugins: () => [
             require('postcss-modules')({
-              globalModulePaths: [/styles/]
+              globalModulePaths: [/global/]
             }),
             require('postcss-flexbugs-fixes'),
             autoprefixer({

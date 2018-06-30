@@ -28,10 +28,11 @@ export default ({ firstState } = {}) => {
   const enhancer = composeEnhancers(applyMiddleware(logger, thunk));
   const appStore = createStore(reducer, firstState, enhancer);
 
-  module.hot.accept('reducers', () => {
-    const nextReducer = require('reducers').default;
-    appStore.replaceReducer(nextReducer);
-  });
-
+  if (module.hot) {
+    module.hot.accept('reducers', () => {
+      const nextReducer = require('reducers').default;
+      appStore.replaceReducer(nextReducer);
+    });
+  }
   return appStore;
 };
