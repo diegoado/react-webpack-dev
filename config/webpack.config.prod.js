@@ -67,8 +67,9 @@ module.exports = {
       'react': 'preact-compat',
       'react-dom': 'preact-compat',
       'components': path.join(paths.src, 'app', 'components'),
-      'reducers': path.join(paths.src, 'store', 'reducers'),
-      'store': path.join(paths.src, 'redux', 'store')
+      'reducers': path.join(paths.src, 'redux', 'reducers'),
+      'store': path.join(paths.src, 'redux', 'store'),
+      'repositories': path.join(paths.src, 'repositories')
     }
   }),
   module: {

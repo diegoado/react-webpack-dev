@@ -64,7 +64,8 @@ module.exports = {
       'react-native': 'react-native-web',
       'components': path.join(paths.src, 'app', 'components'),
       'reducers': path.join(paths.src, 'redux', 'reducers'),
-      'store': path.join(paths.src, 'redux', 'store')
+      'store': path.join(paths.src, 'redux', 'store'),
+      'repositories': path.join(paths.src, 'repositories')
     },
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).

@@ -12,13 +12,16 @@ const composeEnhancers = composeWithDevTools({
 });
 
 const logger = ({ dispatch, getState }) => next => action => {
-  console.group(`LOGGER->Action: ${action.type}`);
-  console.log('Curr State:', getState());
-  const nextAction = next(action);
-  console.log('Next State:', getState());
-  console.groupEnd();
+  if (action.type) {
+    console.group(`LOGGER->Action: ${action.type}`);
+    console.log('Curr State:', getState());
+    const nextAction = next(action);
+    console.log('Next State:', getState());
+    console.groupEnd();
 
-  return nextAction;
+    return nextAction;
+  }
+  return next(action);
 };
 
 export default ({ firstState } = {}) => {
