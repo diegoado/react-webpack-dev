@@ -66,8 +66,9 @@ module.exports = {
       'react-native': 'react-native-web',
       'react': 'preact-compat',
       'react-dom': 'preact-compat',
-      'components': path.join(paths.src, 'app', 'components'),
+      'components': path.join(paths.src, 'components'),
       'reducers': path.join(paths.src, 'redux', 'reducers'),
+      'routes': path.join(paths.src, 'routes'),
       'store': path.join(paths.src, 'redux', 'store'),
       'repositories': path.join(paths.src, 'repositories'),
       'utils': path.join(paths.src, 'utils')

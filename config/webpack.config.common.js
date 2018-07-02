@@ -62,8 +62,9 @@ module.exports = {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
-      'components': path.join(paths.src, 'app', 'components'),
+      'components': path.join(paths.src, 'components'),
       'reducers': path.join(paths.src, 'redux', 'reducers'),
+      'routes': path.join(paths.src, 'routes'),
       'store': path.join(paths.src, 'redux', 'store'),
       'repositories': path.join(paths.src, 'repositories'),
       'utils': path.join(paths.src, 'utils')

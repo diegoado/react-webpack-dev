@@ -1,6 +1,8 @@
 'use strict';
 
+import { createBrowserHistory } from 'history';
 import { createStore, applyMiddleware } from 'redux';
+import { connectRouter, routerMiddleware } from 'connected-react-router';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import thunk from 'redux-thunk';
@@ -24,9 +26,15 @@ const logger = ({ dispatch, getState }) => next => action => {
   return next(action);
 };
 
-export default ({ firstState } = {}) => {
-  const enhancer = composeEnhancers(applyMiddleware(logger, thunk));
-  const appStore = createStore(reducer, firstState, enhancer);
+export const history = createBrowserHistory();
+
+const configureStore = ({ firstState } = {}) => {
+  const enhancer = composeEnhancers(applyMiddleware(
+    routerMiddleware(history), logger, thunk
+  ));
+  const appStore = createStore(
+    connectRouter(history)(reducer), firstState, enhancer
+  );
 
   if (module.hot) {
     module.hot.accept('reducers', () => {
@@ -36,3 +44,5 @@ export default ({ firstState } = {}) => {
   }
   return appStore;
 };
+
+export default configureStore;
