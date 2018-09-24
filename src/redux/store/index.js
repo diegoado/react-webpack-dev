@@ -1,13 +1,17 @@
 'use strict';
 
-import { createBrowserHistory } from 'history';
 import { createStore, applyMiddleware } from 'redux';
-import { connectRouter, routerMiddleware } from 'connected-react-router';
+import {
+  connectRouter,
+  routerMiddleware
+} from 'connected-react-router/immutable';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
+import Immutable from 'immutable';
 import thunk from 'redux-thunk';
 
-import reducer from 'reducers';
+import history from 'routes/history';
+import rootReducer from 'reducers';
 
 const composeEnhancers = composeWithDevTools({
   // Specify name here, actionsBlacklist, actionsCreators and other options if needed
@@ -26,14 +30,15 @@ const logger = ({ dispatch, getState }) => next => action => {
   return next(action);
 };
 
-export const history = createBrowserHistory();
+const middleware = [thunk, logger, routerMiddleware(history)];
 
-const configureStore = ({ firstState } = {}) => {
-  const enhancer = composeEnhancers(applyMiddleware(
-    routerMiddleware(history), logger, thunk
-  ));
+const configureStore = ({ firstState } = Immutable.Map()) => {
+  const enhancer = composeEnhancers(applyMiddleware(...middleware));
+
   const appStore = createStore(
-    connectRouter(history)(reducer), firstState, enhancer
+    connectRouter(history)(rootReducer),
+    firstState,
+    enhancer
   );
 
   if (module.hot) {

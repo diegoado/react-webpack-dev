@@ -18,7 +18,7 @@ const isLocalhost = Boolean(
     )
 );
 
-const registerValidSW = (swUrl) => {
+const registerValidSW = swUrl => {
   navigator.serviceWorker
     .register(swUrl)
     .then(registration => {
@@ -46,7 +46,7 @@ const registerValidSW = (swUrl) => {
     });
 };
 
-const checkValidServiceWorker = (swUrl) => {
+const checkValidServiceWorker = swUrl => {
   // Check if the service worker can be found. If it can't reload the page.
   fetch(swUrl)
     .then(response => {
@@ -67,7 +67,9 @@ const checkValidServiceWorker = (swUrl) => {
       }
     })
     .catch(() => {
-      console.log('No internet connection found. App is running in offline mode.');
+      console.log(
+        'No internet connection found. App is running in offline mode.'
+      );
     });
 };
 
@@ -94,7 +96,7 @@ const register = () => {
         navigator.serviceWorker.ready.then(() => {
           console.log(
             'This web app is being served cache-first by a service ' +
-            'worker. To learn more, visit https://goo.gl/SC7cgQ'
+              'worker. To learn more, visit https://goo.gl/SC7cgQ'
           );
         });
       } else {

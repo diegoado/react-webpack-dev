@@ -1,6 +1,6 @@
 {
   "parser": "babel-eslint",
-  "extends": ["semistandard-react"],
+  "extends": ["semistandard-react", "plugin:prettier/recommended"],
   "parserOptions": {
     "ecmaVersion": 6,
     "ecmaFeatures": {
@@ -10,22 +10,34 @@
     }
   },
   "rules": {
-    /* JSX */
-    "react/prop-types": [0, {
-      "ignore": ["className", "children", "location", "params", "location*"]
-    }],
-    "no-param-reassign": [0, {
-      "props": false
-    }],
+    "max-len": [
+      "error",
+      { "code": 80, "ignoreUrls": true, "ignoreComments": true }
+    ],
+    "react/prop-types": [
+      0,
+      {
+        "ignore": ["className", "children", "location", "params", "location*"]
+      }
+    ],
+    "no-param-reassign": [
+      0,
+      {
+        "props": false
+      }
+    ],
     "prefer-rest-params": 1,
     "arrow-body-style": 0,
     "prefer-template": 0,
     "react/prefer-stateless-function": 0,
-    "react/jsx-no-bind": [0, {
-      "ignoreRefs": false,
-      "allowArrowFunctions": true,
-      "allowBind": true
-    }]
+    "react/jsx-no-bind": [
+      0,
+      {
+        "ignoreRefs": false,
+        "allowArrowFunctions": true,
+        "allowBind": true
+      }
+    ]
   },
   "globals": {
     "test": true,

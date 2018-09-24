@@ -3,37 +3,33 @@ import ReactDOM from 'react-dom';
 
 import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router';
-import { renderRoutes } from 'react-router-config';
 
 import registerServiceWorker from './registerServiceWorker';
-import configureStore, { history } from 'store';
-import routes from 'routes';
+import createStore from 'store';
+import Routes from 'routes';
 
 import './styles.css';
 import './global.css';
 
-const store = configureStore();
+const store = createStore();
 
-const renderApp = appRoutes => {
+const renderApp = AppRoutes => {
   ReactDOM.render(
     <AppContainer>
       <Provider store={store}>
-        <ConnectedRouter history={history}>
-          { renderRoutes(appRoutes) }
-        </ConnectedRouter>
+        <AppRoutes />
       </Provider>
     </AppContainer>,
     document.querySelector('[data-js="app-root"]')
   );
 };
 
-renderApp(routes);
+renderApp(Routes);
 
 if (module.hot) {
   module.hot.accept('routes', () => {
-    const appRoutes = require('routes').default;
-    renderApp(appRoutes);
+    const AppRoutes = require('routes').default;
+    renderApp(AppRoutes);
   });
 }
 
