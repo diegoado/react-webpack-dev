@@ -44,7 +44,7 @@ const configureStore = ({ firstState } = Immutable.Map()) => {
   if (module.hot) {
     module.hot.accept('reducers', () => {
       const nextReducer = require('reducers').default;
-      appStore.replaceReducer(nextReducer);
+      appStore.replaceReducer(connectRouter(history)(nextReducer));
     });
   }
   return appStore;
