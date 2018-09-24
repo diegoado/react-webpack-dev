@@ -23,10 +23,11 @@ if (process.env.NODE_ENV !== 'production') {
 // (See https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/27)
 // However, our output is structured with css, js and media folders.
 // To have this structure working with relative paths, we have to use custom options.
-const extractTextPluginOptions = (cssFilename) => common.shouldUseRelativeAssetPaths
-  // Making sure that the publicPath goes back to to build folder.
-  ? { publicPath: Array(cssFilename.split('/').length).join('../') }
-  : {};
+const extractTextPluginOptions = cssFilename =>
+  common.shouldUseRelativeAssetPaths
+    ? // Making sure that the publicPath goes back to to build folder.
+      { publicPath: Array(cssFilename.split('/').length).join('../') }
+    : {};
 
 // Note: defined here because it will be used more than once.
 const crpFilename = 'static/css/styles.css';
@@ -48,30 +49,26 @@ module.exports = {
   devtool: common.shouldUseSourceMap ? 'source-map' : false,
   // In production, we only want to load the polyfills and the app code.
   entry: {
-    main: [
-      require.resolve('../polyfills'),
-      paths.indexJs
-    ]
+    main: [require.resolve('../polyfills'), paths.indexJs]
   },
   output: Object.assign({}, common.output, {
     // Point sourcemap entries to original disk location (format as URL on Windows)
-    devtoolModuleFilenameTemplate: info => path
-      .relative(paths.src, info.absoluteResourcePath)
-      .replace(/\\/g, '/')
+    devtoolModuleFilenameTemplate: info =>
+      path.relative(paths.src, info.absoluteResourcePath).replace(/\\/g, '/')
   }),
   resolve: Object.assign({}, common.resolve, {
     alias: {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
-      'react': 'preact-compat',
+      react: 'preact-compat',
       'react-dom': 'preact-compat',
-      'components': path.join(paths.src, 'components'),
-      'reducers': path.join(paths.src, 'redux', 'reducers'),
-      'routes': path.join(paths.src, 'routes'),
-      'store': path.join(paths.src, 'redux', 'store'),
-      'repositories': path.join(paths.src, 'repositories'),
-      'utils': path.join(paths.src, 'utils')
+      components: path.join(paths.src, 'components'),
+      reducers: path.join(paths.src, 'redux', 'reducers'),
+      routes: path.join(paths.src, 'routes'),
+      store: path.join(paths.src, 'redux', 'store'),
+      repositories: path.join(paths.src, 'repositories'),
+      utils: path.join(paths.src, 'utils')
     }
   }),
   module: {
@@ -88,18 +85,17 @@ module.exports = {
                 options: {
                   babelrc: false,
                   compact: true,
-                  presets: [
-                    ['env', { modules: false }],
-                    'stage-0',
-                    'react'
-                  ],
+                  presets: [['env', { modules: false }], 'stage-0', 'react'],
                   plugins: [
-                    ['transform-runtime', {
-                      helpers: false,
-                      polyfill: false,
-                      regenerator: true,
-                      moduleName: 'babel-runtime'
-                    }]
+                    [
+                      'transform-runtime',
+                      {
+                        helpers: false,
+                        polyfill: false,
+                        regenerator: true,
+                        moduleName: 'babel-runtime'
+                      }
+                    ]
                   ]
                 }
               }
@@ -164,7 +160,8 @@ module.exports = {
       },
       chunksSortMode: (chunk1, chunk2) => {
         return (
-          chunksOrder.indexOf(chunk1.names[0]) - chunksOrder.indexOf(chunk2.names[0])
+          chunksOrder.indexOf(chunk1.names[0]) -
+          chunksOrder.indexOf(chunk2.names[0])
         );
       }
     }),
@@ -172,10 +169,9 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'react',
       chunks: ['main'],
-      minChunks: ({ resource }) => (
+      minChunks: ({ resource }) =>
         /node_modules\/(react(-dom)?|fbjs)/.test(resource) ||
         /node_modules\/preact/.test(resource)
-      )
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
@@ -219,7 +215,7 @@ module.exports = {
       // about it being stale, and the cache-busting can be skipped.
       dontCacheBustUrlsMatching: /\.\w{8}\./,
       filename: 'service-worker.js',
-      logger (message) {
+      logger(message) {
         if (message.indexOf('Total precache size is') === 0) {
           // This message occurs for every build and is a bit too noisy.
           return;
@@ -240,8 +236,6 @@ module.exports = {
       // Don't precache source maps (they're large) and build asset manifest:
       staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/]
     })
-  ].concat(
-    process.env.ANALYZER ? new BundleAnalyzerPlugin() : []
-  ),
+  ].concat(process.env.ANALYZER ? new BundleAnalyzerPlugin() : []),
   node: common.node
 };

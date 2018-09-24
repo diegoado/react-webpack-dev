@@ -14,7 +14,8 @@ const packageJson = require(paths.packageJson);
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
-const publicPath = process.env.NODE_ENV === 'production' ? paths.servedPath : '/';
+const publicPath =
+  process.env.NODE_ENV === 'production' ? paths.servedPath : '/';
 // Some apps do not use client-side routing with pushState.
 // For these, "homepage" can be set to "." to enable relative asset paths.
 const shouldUseRelativeAssetPaths = publicPath === './';
@@ -29,8 +30,9 @@ const env = clientEnvironment(publicUrl);
 
 // noinspection WebpackConfigHighlighting
 module.exports = {
-  criticalRendering: packageJson.criticalRendering
-    .map(file => new RegExp(file)),
+  criticalRendering: packageJson.criticalRendering.map(
+    file => new RegExp(file)
+  ),
 
   projectName: loadsh.startCase(packageJson.name || 'react-app'),
 
@@ -62,12 +64,12 @@ module.exports = {
       // Support React Native Web
       // https://www.smashingmagazine.com/2016/08/a-glimpse-into-the-future-with-react-native-for-web/
       'react-native': 'react-native-web',
-      'components': path.join(paths.src, 'components'),
-      'reducers': path.join(paths.src, 'redux', 'reducers'),
-      'routes': path.join(paths.src, 'routes'),
-      'store': path.join(paths.src, 'redux', 'store'),
-      'repositories': path.join(paths.src, 'repositories'),
-      'utils': path.join(paths.src, 'utils')
+      components: path.join(paths.src, 'components'),
+      reducers: path.join(paths.src, 'redux', 'reducers'),
+      routes: path.join(paths.src, 'routes'),
+      store: path.join(paths.src, 'redux', 'store'),
+      repositories: path.join(paths.src, 'repositories'),
+      utils: path.join(paths.src, 'utils')
     },
     plugins: [
       // Prevents users from importing files from outside of src/ (or node_modules/).

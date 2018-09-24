@@ -5,6 +5,7 @@ const webpack = require('webpack');
 
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+// eslint-disable-next-line max-len
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 
 const common = require('./webpack.config.common');
@@ -53,10 +54,7 @@ module.exports = {
           common.jsLoader,
           {
             test: /\.css$/,
-            use: [
-              'style-loader',
-              ...common.cssLoader.use
-            ]
+            use: ['style-loader', ...common.cssLoader.use]
           },
           common.fileLoader
         ]
